@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			img{
+				vertical-align: top;
+			}
+			#box{
+				width: 400px;
+				height: 400px;
+				border: 1px solid #ccc;
+				margin: 100px;
+				position: relative;
+			}
+			#mask{
+				width: 200px;
+				height: 200px;
+				background-color: rgba(255,255,0,0.3);
+				position: absolute;
+				top: 0;
+				left: 0;
+				cursor: move;
+				display: none;
+			}
+			#small{
+				position: relative;
+			}
+			#big{
+				width: 500px;
+				height: 500px;
+				border: 1px solid #ccc;
+				overflow: hidden;
+				position: absolute;
+				left: 420px;
+				top: 0;
+				display: none;
+				
+			}
+			#big img{
+				position: absolute;
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload=function(){
+				var box=document.getElementById("box");
+				var small=document.getElementById("small");
+				var mask=document.getElementById("mask");
+				var big=document.getElementById("big");
+				var bigImg=big.children[0];
+				small.onmouseover=function(){
+					mask.style.display="block";
+					big.style.display="block";
+				}
+				small.onmouseout=function(){
+					mask.style.display="none";
+					big.style.display="none";
+				}
+				small.onmousemove=function(event){
+					event=event||window.event;
+					var st=document.documentElement.scrollTop||document.body.scrollTop;
+					var sl=document.documentElement.scrollLeft||document.body.scrollLeft;
+					var x=event.clientX-this.parentNode.offsetLeft-mask.offsetWidth/2+sl;
+					var y=event.clientY-this.parentNode.offsetTop-mask.offsetHeight/2+st;
+					if(x<=0){
+						x=0;
+					}else if(x>=small.offsetWidth-mask.offsetWidth){
+						x=small.offsetWidth-mask.offsetWidth;
+					}
+					if(y<=0){
+						y=0;
+					}else if(y>=small.offsetHeight-mask.offsetHeight){
+						y=small.offsetHeight-mask.offsetHeight;
+					}
+					
+					mask.style.left=x+"px";
+					mask.style.top=y+"px";
+					bigImg.style.left=-x*(big.offsetWidth/small.offsetWidth)+"px";
+					bigImg.style.top=-y*(big.offsetHeight/small.offsetHeight)+"px";
+//					bigImg.style.left=-mask.offsetLeft*(big.offsetWidth/small.offsetWidth)+"px";
+//					bigImg.style.top=-mask.offsetTop*(big.offsetHeight/small.offsetHeight)+"px";
+//					bigImg.style.left=-x*2+"px";
+//					bigImg.style.top=-y*2+"px";
+				}
+			}
+		</script>
+	</head>
+	<body style="height: 1000px;">
+		<div id="box">
+			<div id="small">
+				<img src="img/2.jpg"/>
+				<div id="mask"></div>
+			</div>
+			<div id="big">
+				<img src="img/3.jpg"/>
+			</div>
+		</div>
+	</body>
+</html>
